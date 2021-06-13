@@ -1,30 +1,36 @@
-import React, { FC, useState, MouseEvent } from 'react';
+import React, { useState, MouseEvent, useEffect } from 'react';
 import {
-  AppBar,
-  Avatar,
   Box,
   Button,
   Menu,
   MenuItem,
-  Toolbar,
+  Tab,
+  Tabs,
   Typography,
 } from '@material-ui/core';
-import HomeTwoToneIcon from '@material-ui/icons/HomeTwoTone';
-import DeveloperBoardTwoToneIcon from '@material-ui/icons/DeveloperBoardTwoTone';
-import EmojiPeopleTwoToneIcon from '@material-ui/icons/EmojiPeopleTwoTone';
-import useStyles from './styles';
-import { NavLink, useHistory } from 'react-router-dom';
+import HomeIcon from '@material-ui/icons/Home';
+import GroupIcon from '@material-ui/icons/Group';
+import BookmarkIcon from '@material-ui/icons/Bookmark';
+import AssignmentIcon from '@material-ui/icons/Assignment';
+import AccountTreeIcon from '@material-ui/icons/AccountTree';
+import { useHistory, useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { logout } from '../../actions/auth';
-import { selectUserAvatarState } from '../../selectors/user';
+import { selectUserDataState } from '../../selectors/user';
 import { userClearData } from '../../actions/user';
+import { MyAppBar, MyAvatar, MyToolBar, StyledLink } from './styled';
 
-const Header: FC = () => {
-  const classes = useStyles();
+const Header = () => {
   const dispatch = useDispatch();
   const history = useHistory();
-  const userAvatar = useSelector(selectUserAvatarState);
+  const location = useLocation();
+  const userInfo = useSelector(selectUserDataState);
   const [anchor, setAnchor] = useState(null);
+  const [value, setValue] = useState(location.pathname);
+
+  useEffect(() => {
+    setValue(location.pathname);
+  }, [location.pathname]);
 
   const handleClick = (event: MouseEvent<HTMLButtonElement>) => {
     setAnchor(event.currentTarget);
@@ -40,55 +46,99 @@ const Header: FC = () => {
   };
 
   const handleLogout = () => {
+    handleClose();
     dispatch(logout());
     dispatch(userClearData());
-    history.push('/login');
+    setValue('/');
+    history.push('/');
+  };
+
+  const handleChange = (event: React.ChangeEvent<{}>, newValue: string) => {
+    setValue(newValue);
+  };
+
+  const clickOnNavigation = (path: string) => {
+    history.push(path);
   };
 
   return (
-    <AppBar position="sticky">
-      <Toolbar variant="dense" className={classes.backgroundHeader}>
-        <Box className={classes.flexContainer}>
-          <Box>
-            <NavLink to="/" className={classes.linkStyle}>
-              <HomeTwoToneIcon style={{ width: '30px', height: '30px' }} />
-            </NavLink>
-            <NavLink to="/boards" className={classes.linkStyle}>
-              <DeveloperBoardTwoToneIcon
-                style={{ marginLeft: '10px', width: '30px', height: '30px' }}
-              />
-            </NavLink>
-          </Box>
-          <Box className={classes.centerBlock}>
-            <EmojiPeopleTwoToneIcon />
-            <Typography variant="h6">Corporate trello</Typography>
-          </Box>
-          <Box>
-            <Button onClick={handleClick}>
-              <Avatar
-                alt="Remy Sharp"
-                src={
-                  userAvatar
-                    ? userAvatar
-                    : 'https://media.defense.gov/2020/Feb/19/2002251686/700/465/0/200219-A-QY194-002.JPG'
-                }
-              />
-            </Button>
+    <MyAppBar position="sticky">
+      <MyToolBar variant="dense">
+        <StyledLink to="/">
+          <Typography variant="h6">App name</Typography>
+        </StyledLink>
+        <Tabs
+          value={value}
+          onChange={handleChange}
+          variant="fullWidth"
+          indicatorColor="secondary"
+          textColor="secondary"
+          aria-label="icon label tabs example"
+        >
+          <Tab
+            icon={<HomeIcon />}
+            label="Home"
+            value="/"
+            onClick={() => clickOnNavigation('/')}
+          ></Tab>
+          <Tab
+            icon={<GroupIcon />}
+            label="Teams"
+            value="/teams"
+            onClick={() => clickOnNavigation('/teams')}
+          />
+          <Tab
+            icon={<AccountTreeIcon />}
+            label="Projects"
+            value="/projects"
+            onClick={() => clickOnNavigation('/projects')}
+          />
+          <Tab
+            icon={<AssignmentIcon />}
+            label="Boards"
+            value="/boards"
+            onClick={() => clickOnNavigation('/boards')}
+          />
+          <Tab
+            icon={<BookmarkIcon />}
+            label="Bookmarks"
+            value="/bookmarks"
+            onClick={() => clickOnNavigation('/bookmarks')}
+          />
+        </Tabs>
+
+        <Box>
+          <Button onClick={handleClick} disabled={userInfo ? false : true}>
+            <MyAvatar>
+              {userInfo ? userInfo.firstName[0] + userInfo.lastName[0] : null}
+            </MyAvatar>
+          </Button>
+          {userInfo ? (
             <Menu
               id="simple-menu"
               anchorEl={anchor}
               keepMounted
               open={Boolean(anchor)}
               onClose={handleClose}
-              style={{ marginTop: '35px', marginLeft: '10px' }}
+              style={{ marginTop: '55px' }}
             >
+              <MenuItem style={{ width: '200px' }} disabled>
+                App name
+              </MenuItem>
+              <hr />
+              <MenuItem disabled>
+                {userInfo.firstName} {userInfo.lastName}
+              </MenuItem>
               <MenuItem onClick={handleProfile}>Profile</MenuItem>
+              <MenuItem onClick={handleProfile}>Settings</MenuItem>
+              <MenuItem onClick={handleProfile}>Navigation page</MenuItem>
+              <hr />
               <MenuItem onClick={handleLogout}>Logout</MenuItem>
             </Menu>
-          </Box>
+          ) : null}
         </Box>
-      </Toolbar>
-    </AppBar>
+      </MyToolBar>
+    </MyAppBar>
   );
 };
 

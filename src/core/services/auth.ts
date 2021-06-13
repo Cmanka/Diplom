@@ -2,6 +2,8 @@ import { FirebaseCollection } from '../constants/collections';
 import { auth, firestore } from '../firebase/index';
 import { IAuth } from '../interfaces/IAuth';
 import { IUser } from '../interfaces/IUser';
+import { format } from 'date-fns';
+import { IRegister } from 'core/interfaces/IRegister';
 
 export const login = ({ email, password }: IAuth): Promise<string> => {
   return auth
@@ -14,14 +16,24 @@ export const register = ({
   password,
   firstName,
   lastName,
-}: IAuth): Promise<IUser> => {
+  location,
+  organization,
+  position,
+}: IRegister): Promise<IUser> => {
   return auth
     .createUserWithEmailAndPassword(email, password)
     .then(({ user }) => {
-      const newUser: Omit<IUser, 'uid'> = {
+      const newUser: IUser = {
+        uid: user.uid,
         email,
         firstName,
         lastName,
+        dateRegister: format(new Date(), 'dd MMM yyyy HH:mm'),
+        dateAuthorization: format(new Date(), 'dd MMM yyyy HH:mm'),
+        location: location ? location : '',
+        organization: organization ? organization : '',
+        position: position ? position : '',
+        bookmarks: [],
       };
       return firestore
         .collection(FirebaseCollection.Users)

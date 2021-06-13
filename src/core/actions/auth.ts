@@ -1,3 +1,4 @@
+import { IRegister } from 'core/interfaces/IRegister';
 import { Action } from '../interfaces/IAction';
 import { IAuth } from '../interfaces/IAuth';
 
@@ -11,8 +12,8 @@ export enum AuthActionTypes {
   LOGOUT = '[Auth] LOGOUT',
 }
 
-export const login = ({ email, password }: IAuth): Action<AuthActionTypes> => {
-  return { type: AuthActionTypes.LOGIN, payload: { email, password } };
+export const login = (data: IAuth): Action<AuthActionTypes> => {
+  return { type: AuthActionTypes.LOGIN, payload: { data } };
 };
 
 export const loginSuccess = (uid: string): Action<AuthActionTypes> => {
@@ -23,7 +24,7 @@ export const loginFailed = (error: string): Action<AuthActionTypes> => {
   return { type: AuthActionTypes.LOGIN_FAILED, payload: { error } };
 };
 
-export const register = (data: IAuth): Action<AuthActionTypes> => {
+export const register = (data: IRegister): Action<AuthActionTypes> => {
   return { type: AuthActionTypes.REGISTER, payload: { data } };
 };
 

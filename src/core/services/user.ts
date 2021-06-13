@@ -1,5 +1,5 @@
 import { IUser } from '../interfaces/IUser';
-import { auth, firestore } from '../firebase';
+import { firestore } from '../firebase';
 import { FirebaseCollection } from '../constants/collections';
 import firebase from '../firebase';
 import 'firebase/storage';
@@ -15,11 +15,11 @@ export const getUser = (userId: string): Promise<IUser> =>
       uid: userId,
     }));
 
-export const updateUser = ({ firstName, lastName }: IUser): Promise<void> =>
+export const updateUser = (user: IUser): Promise<void> =>
   firestore
     .collection(FirebaseCollection.Users)
-    .doc(auth.currentUser.uid)
-    .update({ firstName, lastName });
+    .doc(user.uid)
+    .update({ ...user });
 
 export const getUserAvatar = (uid: string): Promise<string> =>
   firebase.storage().ref(`user/${uid}/profile-picture`).getDownloadURL();
@@ -29,3 +29,13 @@ export const updateUserAvatar = (
   file: File
 ): firebase.storage.UploadTask =>
   firebase.storage().ref(`user/${uid}/profile-picture`).put(file);
+
+export const fetchUsers = () =>
+  firestore
+    .collection(FirebaseCollection.Users)
+    .get()
+    .then(async (querySnapshot) => {
+      const users: IUser[] = [];
+      await querySnapshot.forEach((doc) => users.push(doc.data() as IUser));
+      return users;
+    });

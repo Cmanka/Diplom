@@ -12,10 +12,7 @@ import { login, logout as logoutServ, register } from '../services/auth';
 
 function* loginWorker(action: Action<AuthActionTypes>): any {
   try {
-    const uid = yield call(login, {
-      email: action.payload.email,
-      password: action.payload.password,
-    });
+    const uid = yield call(login, { ...action.payload.data });
     yield put(loginSuccess(uid));
   } catch (e) {
     yield put(loginFailed(e.message));

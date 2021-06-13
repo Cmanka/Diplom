@@ -1,24 +1,14 @@
-import {
-  Avatar,
-  Button,
-  Container,
-  CssBaseline,
-  Grid,
-  TextField,
-  Typography,
-} from '@material-ui/core';
-import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
-import React, { FC, memo, useEffect } from 'react';
-import { NavLink } from 'react-router-dom';
-import { useStyles } from './styles';
+import { Container, Grid, TextField, Typography } from '@material-ui/core';
+import LockIcon from '@material-ui/icons/Lock';
+import { FC, memo, useEffect } from 'react';
+import { HeaderForm, IconBlock, MyButton, Link } from './styled';
 import { useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
 import { RegisterFormValues } from './types';
-import { register as registerAction } from '../../../../../core/actions/auth';
-import { IAuth } from '../../../../../core/interfaces/IAuth';
+import { register as registerAction } from 'core/actions/auth';
+import { IRegister } from 'core/interfaces/IRegister';
 
 const Form: FC = memo(() => {
-  const classes = useStyles();
   const dispatch = useDispatch();
   const { register, handleSubmit } = useForm<RegisterFormValues>();
 
@@ -57,20 +47,21 @@ const Form: FC = memo(() => {
   }, [register]);
 
   const onSubmit = handleSubmit((data) => {
-    dispatch(registerAction(data as IAuth));
+    dispatch(registerAction(data as IRegister));
   });
 
   return (
     <Container component="main" maxWidth="xs">
-      <CssBaseline />
-      <div className={classes.paper}>
-        <Avatar className={classes.avatar}>
-          <LockOutlinedIcon />
-        </Avatar>
-        <Typography component="h1" variant="h5">
-          Sign in
-        </Typography>
-        <form className={classes.form}>
+      <div>
+        <HeaderForm>
+          <IconBlock>
+            <LockIcon />
+          </IconBlock>
+          <Typography component="h1" variant="h5">
+            Sign Up
+          </Typography>
+        </HeaderForm>
+        <form>
           <TextField
             variant="outlined"
             margin="normal"
@@ -117,17 +108,17 @@ const Form: FC = memo(() => {
             inputRef={register}
           />
           <Grid container justify="center">
-            <NavLink to="/login">Back to sign in</NavLink>
+            <Link to="/login">Back to sign in</Link>
           </Grid>
-          <Button
+          <MyButton
             type="submit"
             fullWidth
             variant="contained"
-            className={classes.submit}
+            color="primary"
             onClick={onSubmit}
           >
             Sign Up
-          </Button>
+          </MyButton>
         </form>
       </div>
     </Container>

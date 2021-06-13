@@ -53,7 +53,10 @@ export const reducer = (
       return {
         ...state,
         isLoading: false,
-        data: action.payload.user,
+        data:
+          action.payload.user.uid === state.data.uid
+            ? action.payload.user
+            : state.data,
       };
     }
     case UserActionTypes.USER_PROFILE_UPDATE_FAILED: {

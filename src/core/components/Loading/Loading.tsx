@@ -1,14 +1,15 @@
 import { CircularProgress } from '@material-ui/core';
-import React, { FC } from 'react';
-import { useStyles } from './styles';
+import { LoaderPlace } from './styled';
 
-const Loading: FC = () => {
-  const classes = useStyles();
+export interface LoadingProps {
+  position: string;
+}
 
+const Loading = ({ position }: LoadingProps) => {
   return (
-    <div className={classes.root}>
-      <CircularProgress className={classes.loadingColor} />
-    </div>
+    <LoaderPlace position={position}>
+      <CircularProgress />
+    </LoaderPlace>
   );
 };
 

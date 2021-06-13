@@ -16,7 +16,7 @@ const Information: FC<InfoProps> = ({
       <hr />
       <div className={classes.profileInfoContent}>
         {isLoading || isAvatarLoading ? (
-          <Loading />
+          <Loading position="absolute" />
         ) : (
           <>
             <div>

@@ -1,23 +1,13 @@
-import {
-  Avatar,
-  Button,
-  Container,
-  CssBaseline,
-  Grid,
-  TextField,
-  Typography,
-} from '@material-ui/core';
-import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
-import React, { FC, memo, useEffect } from 'react';
-import { NavLink } from 'react-router-dom';
-import { useStyles } from './styles';
+import { Container, TextField, Typography } from '@material-ui/core';
+import LockIcon from '@material-ui/icons/Lock';
+import { FC, memo, useEffect } from 'react';
+import { HeaderForm, IconBlock, MyButton, LinksBlock, Link } from './styled';
 import { useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
 import { LoginFormValues } from './types';
-import { login } from '../../../../../core/actions/auth';
+import { login } from 'core/actions/auth';
 
 const Form: FC = memo(() => {
-  const classes = useStyles();
   const dispatch = useDispatch();
   const { register, handleSubmit } = useForm<LoginFormValues>();
 
@@ -41,15 +31,16 @@ const Form: FC = memo(() => {
 
   return (
     <Container component="main" maxWidth="xs">
-      <CssBaseline />
-      <div className={classes.paper}>
-        <Avatar className={classes.avatar}>
-          <LockOutlinedIcon />
-        </Avatar>
-        <Typography component="h1" variant="h5">
-          Sign in
-        </Typography>
-        <form className={classes.form}>
+      <div>
+        <HeaderForm>
+          <IconBlock>
+            <LockIcon />
+          </IconBlock>
+          <Typography component="h1" variant="h5">
+            Sign In
+          </Typography>
+        </HeaderForm>
+        <form>
           <TextField
             variant="outlined"
             margin="normal"
@@ -73,25 +64,19 @@ const Form: FC = memo(() => {
             autoComplete="current-password"
             inputRef={register}
           />
-          <Button
+          <MyButton
             type="submit"
             fullWidth
             variant="contained"
-            className={classes.submit}
+            color="primary"
             onClick={onSubmit}
           >
             Sign In
-          </Button>
-          <Grid container>
-            <Grid item xs>
-              <NavLink to="/">Forgot password?</NavLink>
-            </Grid>
-            <Grid item>
-              <NavLink to="/register">
-                {"Don't have an account? Sign Up"}
-              </NavLink>
-            </Grid>
-          </Grid>
+          </MyButton>
+          <LinksBlock>
+            <Link to="/">Forgot password?</Link>
+            <Link to="/register">Don't have an account? Sign Up</Link>
+          </LinksBlock>
         </form>
       </div>
     </Container>

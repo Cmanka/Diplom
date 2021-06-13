@@ -1,6 +1,9 @@
 import { combineReducers } from 'redux';
 import * as fromUser from './user';
 import * as fromAuth from './auth';
+import * as fromBoard from './board';
+import * as fromTeam from './team';
+import * as fromProj from './project';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import { applyMiddleware, createStore } from 'redux';
 import firebase from '../firebase';
@@ -15,11 +18,17 @@ const sagaMIddleware = createSagaMiddleware();
 export interface AppState {
   user: fromUser.State;
   auth: fromAuth.State;
+  board: fromBoard.State;
+  team: fromTeam.State;
+  project: fromProj.State;
 }
 
 export const rootReducer = combineReducers<AppState>({
   user: fromUser.reducer,
   auth: fromAuth.reducer,
+  board: fromBoard.reducer,
+  team: fromTeam.reducer,
+  project: fromProj.reducer,
 });
 
 export const store = createStore(

@@ -1,42 +1,63 @@
-import { Container, Grid, Paper } from '@material-ui/core';
-import Header from '../../core/components/Header';
-import React, { FC } from 'react';
-import Navbar from '../../core/components/Navbar';
-import useStyles from './styles';
+import { Card, CardContent, Grid, Typography } from '@material-ui/core';
+import { Link } from 'react-router-dom';
+import { MyContainer, TitleBlock, CardAction, CardMediaPlace, GridContainer } from './styled';
 
-const Home: FC = () => {
-  const classes = useStyles();
-
+const Home = () => {
   return (
-    <>
-      <Header />
-      <Container className={classes.root}>
-        <Grid container spacing={4}>
-          <Grid item xs={3}>
-            <Navbar />
-          </Grid>
-          <Grid item xs={9}>
-            <Paper elevation={3}>
-              <div>
-                <img
-                  src="https://a.trellocdn.com/prgb/dist/images/home/orientation/no-content.e55b3540e5c1f06a51d7.svg"
-                  alt="loading.."
-                  className={classes.img}
-                />
-              </div>
-              <div className={classes.bottomContent}>
-                <h3 className={classes.title}>Welcome to the home page</h3>
-                <p className={classes.title}>
-                  Invite people to boards and cards, leave comments, add
-                  deadlines, and we'll display the most important activities
-                  here.
-                </p>
-              </div>
-            </Paper>
-          </Grid>
+    <MyContainer fixed>
+      <TitleBlock>
+        <Typography variant="h3" component="div">
+          Welcome to the home page
+          <Typography variant="subtitle1" component="p">
+            on this page you can see the advantages and capabilities of this application
+          </Typography>
+        </Typography>
+      </TitleBlock>
+      <GridContainer container spacing={5}>
+        <Grid item xs={4}>
+          <Link to="/teams" style={{ textDecoration: 'none' }}>
+            <Card>
+              <CardAction>
+                <CardMediaPlace image="https://illustrators.ru/uploads/illustration/image/1196073/main_Programmers_alt_col_copy.png" />
+                <CardContent>
+                  <Typography gutterBottom variant="h3" component="h2" align="center">
+                    Teams
+                  </Typography>
+                </CardContent>
+              </CardAction>
+            </Card>
+          </Link>
         </Grid>
-      </Container>
-    </>
+        <Grid item xs={4}>
+          <Link to="/projects" style={{ textDecoration: 'none' }}>
+            <Card>
+              <CardAction>
+                <CardMediaPlace image="https://image.freepik.com/free-vector/online-training_41910-184.jpg" />
+                <CardContent>
+                  <Typography gutterBottom variant="h3" component="h2" align="center">
+                    Projects
+                  </Typography>
+                </CardContent>
+              </CardAction>
+            </Card>
+          </Link>
+        </Grid>
+        <Grid item xs={4}>
+          <Link to="/boards" style={{ textDecoration: 'none' }}>
+            <Card>
+              <CardAction>
+                <CardMediaPlace image="https://courses.yaware.ru/wp-content/uploads/2018/07/Rol-rukovodytelya-v-obuchenyy-personala-750x561.png" />
+                <CardContent>
+                  <Typography gutterBottom variant="h3" component="h2" align="center">
+                    Boards
+                  </Typography>
+                </CardContent>
+              </CardAction>
+            </Card>
+          </Link>
+        </Grid>
+      </GridContainer>
+    </MyContainer>
   );
 };
 

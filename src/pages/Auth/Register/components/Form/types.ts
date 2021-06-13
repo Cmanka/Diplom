@@ -5,4 +5,7 @@ export interface RegisterFormValues extends FieldValues {
   lastName: string;
   email: string;
   password: string;
+  location: string;
+  position: string;
+  organization: string;
 }

@@ -23,20 +23,19 @@ const Form: FC = memo(() => {
   }, [register]);
 
   const onSubmit = handleSubmit((data) => {
-    if (data.firstName && data.lastName) {
-      dispatch(
-        userProfileUpdate({
-          firstName: data.firstName,
-          lastName: data.lastName,
-          email: user.email,
-          uid: user.uid,
-        })
-      );
-      setValue('firstName', '');
-      setValue('lastName', '');
-    }
-
-    if (data.file[0]) dispatch(userUpdateAvatar(data.file[0]));
+    // if (data.firstName && data.lastName) {
+    //   dispatch(
+    //     userProfileUpdate({
+    //       firstName: data.firstName,
+    //       lastName: data.lastName,
+    //       email: user.email,
+    //       uid: user.uid,
+    //     })
+    //   );
+    //   setValue('firstName', '');
+    //   setValue('lastName', '');
+    // }
+    // if (data.file[0]) dispatch(userUpdateAvatar(data.file[0]));
   });
 
   return (
